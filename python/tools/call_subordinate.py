@@ -1,3 +1,4 @@
+
 from agent import Agent, UserMessage
 from python.helpers.tool import Tool, Response
 from initialize import initialize_agent
@@ -6,14 +7,20 @@ from python.extensions.hist_add_tool_result import _90_save_tool_call_file as sa
 
 class Delegation(Tool):
 
-    async def execute(self, message="", reset="", **kwargs):
+    async def execute(self, message="", reset="", model="", **kwargs):
         # create subordinate agent using the data object on this agent and set superior agent to his data object
         if (
             self.agent.get_data(Agent.DATA_NAME_SUBORDINATE) is None
             or str(reset).lower().strip() == "true"
         ):
+
+            # prepare override settings
+            override_settings = {}
+            if model:
+                override_settings["chat_model_name"] = model
+
             # initialize default config
-            config = initialize_agent()
+            config = initialize_agent(override_settings=override_settings)
 
             # set subordinate prompt profile if provided, if not, keep original
             agent_profile = kwargs.get("profile")

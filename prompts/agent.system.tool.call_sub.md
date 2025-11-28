@@ -10,6 +10,7 @@ reset arg usage:
 if superior, orchestrate
 respond to existing subordinates using call_subordinate tool with reset false
 profile arg usage: select from available profiles for specialized subordinates, leave empty for default
+model arg usage: optional, specify model name to override default (e.g. 'gpt-3.5-turbo')
 
 example usage
 ~~~json
@@ -22,7 +23,8 @@ example usage
     "tool_args": {
         "profile": "",
         "message": "...",
-        "reset": "true"
+        "reset": "true",
+        "model": "gpt-3.5-turbo"
     }
 }
 ~~~
