@@ -3,7 +3,8 @@ services:
     image: agent0ai/agent-zero:latest
     container_name: agent-zero-dev
     ports:
-      - "8088:80"
+    - 8088:80
     volumes:
-      - ./:/a0
+    - ./:/a0
+    - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
