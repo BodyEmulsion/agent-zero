@@ -6,8 +6,8 @@ from typing import Literal
 
 GLOBAL_DIR = "."
 USER_DIR = "usr"
-DEFAULT_AGENTS_DIR = "agents"
-USER_AGENTS_DIR = "usr/agents"
+DEFAULT_AGENTS_DIR = "agents/default"
+USER_AGENTS_DIR = "agents/custom"
 
 type Origin = Literal["default", "user", "project"]
 

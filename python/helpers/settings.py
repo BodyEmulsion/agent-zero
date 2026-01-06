@@ -1773,3 +1773,24 @@ def create_auth_token() -> str:
 
 def _get_version():
     return git.get_version()
+
+
+def load_profile_settings(profile_name: str) -> dict:
+    """
+    Load profile settings from config.json files, prioritizing custom over default.
+    """
+    from . import files
+    import json
+    paths = [
+        files.get_abs_path("agents", "custom", profile_name, "config.json"),
+        files.get_abs_path("agents", "default", profile_name, "config.json")
+    ]
+
+    for path in paths:
+        if os.path.exists(path):
+            try:
+                with open(path, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"Error loading profile {profile_name} from {path}: {e}")
+    return {}

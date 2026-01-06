@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script type="module">
+        import { store as profilesStore } from "/components/profiles/profiles-store.js";
+        import { store as chatsStore } from "/components/sidebar/chats/chats-store.js";
+    </script>
+</head>
+<body>
+    <div x-data="{ open: false }" @click.away="open = false" class="profile-dropdown-container">
+        <template x-if="$store.profiles && $store.chats && $store.chats.selectedContext">
+            <div>
+                <button @click="open = !open" type="button" class="button profile-dropdown-button">
+                    <span class="icon material-symbols-outlined">person</span>
+                    <span x-text="$store.chats.selectedContext.data?.agent_profile || $store.chats.selectedContext.config?.profile || 'Default'"></span>
+                    <span class="icon material-symbols-outlined">arrow_drop_down</span>
+                </button>
+
+                <div x-show="open" x-init="$store.profiles.loadProfilesList()" class="profile-dropdown-menu" style="display: none;" x-transition>
+                    <div class="profile-dropdown-header">Select Profile</div>
+                    <hr class="profile-dropdown-divider">
+                    
+                    <template x-for="profile in $store.profiles.profileList" :key="profile.id">
+                        <a href="#" @click.prevent="$store.profiles.setProfile(profile.id); open = false;" class="profile-dropdown-item">
+                            <span class="icon material-symbols-outlined" x-text="profile.type === 'custom' ? 'face' : 'smart_toy'"></span>
+                            <span class="profile-selector-item-text" x-text="profile.name"></span>
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</body>
+<style>
+    .profile-dropdown-container { position: relative; display: inline-block; }
+    .profile-dropdown-button { display: inline-flex; align-items: center; gap: 0.3em; padding-left: 0.5em; padding-right: 0.5em; }
+    .profile-dropdown-menu {
+        position: absolute; top: 100%; right: 0; z-index: 1000;
+        background-color: var(--color-panel); border: 1px solid var(--color-border);
+        border-radius: 4px; padding: 0.5em 0; min-width: 12rem; max-width: 20em;
+        max-height: 70vh; overflow-y: auto; margin-top: 0.25rem;
+    }
+    .profile-dropdown-header { padding: 0.5em 1em; font-weight: bold; color: var(--color-text-secondary); font-size: 0.9em; }
+    .profile-dropdown-item {
+        display: flex; align-items: center; margin: 0.25em 0.5em; padding: 0.5em 1em;
+        color: var(--color-text-primary); border-radius: var(--spacing-xs);
+        text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .profile-dropdown-item:hover { background-color: var(--color-background-hover); }
+    .profile-dropdown-divider { height: 1px; margin: 0.5rem 0; overflow: hidden; background-color: var(--color-border); border: 0; }
+    .profile-selector-item-text { margin-left: 0.5em; }
+</style>
+</html>

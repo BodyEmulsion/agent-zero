@@ -6,6 +6,11 @@ from python.helpers.print_style import PrintStyle
 
 def initialize_agent(override_settings: dict | None = None):
     current_settings = settings.get_settings()
+    profile_name = current_settings.get("agent_profile")
+    if profile_name:
+        profile_settings = settings.load_profile_settings(profile_name)
+        if profile_settings:
+            current_settings = settings.merge_settings(current_settings, profile_settings)
     if override_settings:
         current_settings = settings.merge_settings(current_settings, override_settings)
 
